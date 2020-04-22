@@ -72,3 +72,7 @@ Algorism_Study/Debug/*
 *.user
 *.filters
 *.vcxproj
+*.tlog
+*.pdb
+*.idb
+*.log
