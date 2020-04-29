@@ -63,13 +63,7 @@ $RECYCLE.BIN/
 *.lnk
 
 # End of https://www.gitignore.io/api/c++,windows
-*.suo
-Algorism_Study/.vs/*
-Algorism_Study/Debug/Step1_01.ilk
-Algorism_Study/Step1_01/Debug/*
-Algorism_Study/Debug/*
-*.user
-*.tlog
-*.pdb
-*.idb
-*.log
+Algorism_Study/.vs/
+Algorism_Study/Debug/
+Algorism_Study/Step001/Question01/Debug/
+Algorism_Study/Step001/Question02/Debug/
