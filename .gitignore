@@ -64,14 +64,11 @@ $RECYCLE.BIN/
 
 # End of https://www.gitignore.io/api/c++,windows
 *.suo
-*.sln
 Algorism_Study/.vs/*
 Algorism_Study/Debug/Step1_01.ilk
 Algorism_Study/Step1_01/Debug/*
 Algorism_Study/Debug/*
 *.user
-*.filters
-*.vcxproj
 *.tlog
 *.pdb
 *.idb
