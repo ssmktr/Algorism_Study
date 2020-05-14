@@ -70,3 +70,7 @@ Algorism_Study/Step001/Question02/Debug/
 Algorism_Study/Step1_02/Debug/
 Algorism_Study/Step1_01/Debug/
 Algorism_Study/Algorism_Study/Debug/
+*.vcxproj
+Algorism_Study/Step002/Question02_01/Debug/
+*.filters
+*.user
