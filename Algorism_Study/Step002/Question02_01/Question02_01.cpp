@@ -4,35 +4,63 @@
 
 using namespace std;
 
+bool CheckFunc(char& c, vector<pair<char, bool>>& check)
+{
+	for (int i = 0; i < check.size(); ++i)
+	{
+		if (check[i].first == c)
+			break;
+
+		if (check[i].first != c && check[i].second == false)
+			return false;
+	}
+
+	return true;
+}
+
 int solution(string skill, vector<string> skill_trees) {
 	int answer = 0;
-	int tf = 1;
-	int check = 0;
-	for (int i = 0; i < skill_trees.size(); i++) {
-		string vec_str = skill_trees[i];
-		for (int j = 0; j < vec_str.size(); j++) {
-			// vec_str[j]와 find_num 비교하기
-			int find_num = skill.find(vec_str[j]);
-			// 범위에맞지않을 경우 
-			if (find_num < 0 || find_num > 30) {
-				continue;
+	
+	vector<pair<char, bool>> check;
+	for (int j = 0; j < skill.size(); ++j)
+	{
+		pair<char, bool> data(skill[j], false);
+		check.push_back(data);
+	}
+
+	for (int i = 0; i < skill_trees.size(); ++i)
+	{
+		int idx1 = -1;
+		string temp1 = skill_trees[i];
+
+		for (int j = 0; j < check.size(); ++j)
+			check[j].second = false;
+
+		for (int j = 0; j < temp1.size(); ++j)
+		{
+			int idx2 = skill.find(temp1[j]);
+			if (idx1 < idx2)
+			{
+				if (!CheckFunc(temp1[j], check))
+				{
+					idx1 = -2;
+					break;
+				}
+
+				idx1 = idx2;
+				check[idx2].second = true;
 			}
-			// 체크된 개수랑 find()한 개수가 틀릴경우 
-			if (find_num != check) {
-				tf = 0;
+			else if(idx2 != -1)
+			{
+				idx1 = -2;
 				break;
 			}
-			//동일한 문자가 있을경우 통과하면
-			else {
-				check++;
-			}
 		}
-		if (tf) {
+
+		if (idx1 >= -1)
 			answer++;
-		}
-		check = 0;
-		tf = 1;
 	}
+
 	return answer;
 }
 
