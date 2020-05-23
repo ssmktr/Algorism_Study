@@ -1,16 +1,26 @@
 ﻿#include <iostream>
 #include <vector>
+#include <map>
 
 using namespace std;
 
-bool dfs(vector<vector<int>>& computers, int n) {
-	if (!computers[n][n])    
+bool CheckFunc(int idx, const vector<vector<int>>& computers, map<int, map<int, bool>>& check)
+{
+	// 나 자신이 이미 사용 됐는지 체크
+	if (check[idx][idx] == true)
 		return false;
-	
-	computers[n][n] = 0;
-	for (int i = 0; i < computers.size(); i++) {
-		if (computers[n][i])    
-			dfs(computers, i);
+
+	// 나 자신 사용했다고 변경
+	check[idx][idx] = true;
+	for (int i = 0; i < computers.size(); ++i)
+	{
+		// 이미 사용된 컴퓨터 인지 체크
+		if (check[idx][i])
+			continue;
+
+		// 연결된 컴퓨터 인지 체크(1 : 연결됨, 0 : 연결 안됨)
+		if (computers[idx][i] == 1)
+			CheckFunc(i, computers, check);
 	}
 
 	return true;
@@ -19,8 +29,12 @@ bool dfs(vector<vector<int>>& computers, int n) {
 int solution(int n, vector<vector<int>> computers) {
 	int answer = 0;
 
-	for (int i = 0; i < n; i++) {
-		if (computers[i][i] && dfs(computers, i))        
+	// 이미 체크 했는지 체크를 위한 STL
+	map<int, map<int, bool>> check;
+
+	for (int i = 0; i < n; ++i)
+	{
+		if (CheckFunc(i, computers, check))
 			answer++;
 	}
 
@@ -29,12 +43,22 @@ int solution(int n, vector<vector<int>> computers) {
 
 int main()
 {
+	int n = 3;
 	vector<vector<int>> coputers = {
 		{1,1,0},
 		{1,1,0},
 		{0,0,1}
 	};
-	int result = solution(3, coputers);
+	int result = solution(n, coputers);
+	cout << result << endl;
+
+	n = 3;
+	coputers = {
+		{1,1,0},
+		{1,1,1},
+		{0,1,1}
+	};
+	result = solution(n, coputers);
 	cout << result << endl;
 
 	system("pause");
