@@ -65,11 +65,11 @@ int solution(int n, vector<vector<int>> costs) {
 			// 도착을 최고 부모로 변경
 			end = value;
 		}
-
+			
 		// 시작과 도착이 같지않으면 코스트 증가
 		if (start != end)
 		{
-			parent[start] = end;
+			parent[end] = start;
 			answer += cost;
 		}
 
