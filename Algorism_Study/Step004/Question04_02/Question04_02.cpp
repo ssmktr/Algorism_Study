@@ -5,14 +5,6 @@
 
 using namespace std;
 
-int find(int node, vector<int>& parent) // 경로 압축
-{
-	if (node == parent[node]) 
-		return node;
-	
-	return parent[node] = find(parent[node], parent);
-}
-
 int solution(int n, vector<vector<int>> costs) {
 	int answer = 0;
 
@@ -30,35 +22,58 @@ int solution(int n, vector<vector<int>> costs) {
 
 	for (int i = 0; i < costs.size(); i++)
 	{
-		int start = find(costs[i][0], parent);
-		int end = find(costs[i][1], parent);
+		int start = costs[i][0];
+		int end = costs[i][1];
 		int cost = costs[i][2];
 
-		//int start = costs[i][0];
-		//int end = costs[i][1];
-		//int cost = costs[i][2];
+		// 시작의 최고 부모를 찾는다
+		if (start != parent[start])
+		{
+			vector<int> idxs;
+			int value = start;
+			// 나 자신이 나올때까지 루프 돌면서 인덱스 저장
+			while (value != parent[value])
+			{
+				idxs.push_back(value);
+				value = parent[value];
+			}
 
-		//while (true)
-		//{
-		//	if (start == parent[start])
-		//		break;
+			// 모든 인덱스( 노드 )의 값을 최고 부모의 값으로 변경
+			for (int i = 0; i < idxs.size(); ++i)
+				parent[idxs[i]] = value;
 
-		//	parent[start] = start;
-		//}
+			// 시작을 최고 부모로 변경
+			start = value;
+		}
 
-		//while (true)
-		//{
-		//	if (end == parent[end])
-		//		break;
+		// 도착의 최고 부모를 찾는다
+		if (end != parent[end])
+		{
+			vector<int> idxs;
+			int value = end;
+			// 나 자신이 나올때까지 루프 돌면서 인덱스 저장
+			while (value != parent[value])
+			{
+				idxs.push_back(value);
+				value = parent[value];
+			}
 
-		//	parent[end] = end;
-		//}
+			// 모든 인덱스( 노드 )의 값을 최고 부모의 값으로 변경
+			for (int i = 0; i < idxs.size(); ++i)
+				parent[idxs[i]] = value;
 
-		if (start != end)  // 사이클이 만들어지는지 체크! 
-		{                  // 크루스칼알고리즘은 사이클이 만들어지지않을 때 추가한다.
+			// 도착을 최고 부모로 변경
+			end = value;
+		}
+
+		// 시작과 도착이 같지않으면 코스트 증가
+		if (start != end)
+		{
 			parent[start] = end;
 			answer += cost;
 		}
+
+		cout << start << ", " << end << " ===> " << ((start != end) ? "ADD" : "COMPARE") << endl;
 	}
 
 	return answer;
