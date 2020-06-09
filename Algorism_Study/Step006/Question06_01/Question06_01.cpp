@@ -1,39 +1,54 @@
 ﻿#include <iostream>
-#include <string>
 #include <vector>
 #include <algorithm>
 
 using namespace std;
 
 int solution(vector<int> priorities, int location) {
-	int answer = priorities.size() - 1;
+	int answer = 0;
 
-	vector<int> check;
+	// 위치와 값 저장 stl
+	vector<pair<int, int>> check;
+	// 값을 내림 차순으로 체크위한 stl
+	vector<int> sortCheck;
 
-	int idx = 0;
-	while (priorities.size() != 0)
+	// 모든 stl을 저장
+	for (int i = 0; i < priorities.size(); ++i)
 	{
-		int value = priorities[idx];
-		for (int i = idx; i < priorities.size(); ++i)
-		{
-			if (priorities[i] > value)
-				idx = i;
-		}
-
-		check.push_back(priorities[idx]);
-		priorities.erase(priorities.begin() + idx);
-
-		idx--;
-		if (idx >= priorities.size())
-			idx = 0;
+		check.push_back(pair<int, int>(i, priorities[i]));
+		sortCheck.push_back(priorities[i]);
 	}
 
-	for (int i = 0; i < check.size(); ++i)
+	// 우선순위를 위해 내림 차순으로 정렬
+	sort(sortCheck.begin(), sortCheck.end(), [](int comp1, int comp2) 
 	{
-		if (check[i] == location)
+		return comp1 > comp2;
+	});
+
+	// 우선순위에 들어있는 사이즈가 0이 될때까지 루프 돈다
+	while (sortCheck.size() != 0)
+	{
+		// 위치와 값의 처음 값을 가져온다
+		int idx = check[0].first;
+		int value = check[0].second;
+
+		// 비교할 위치와 값을 가져 왔기때문에 일단 뺀다
+		check.erase(check.begin());
+		// 앞부분 부터 비교
+		if (value == sortCheck[0])
 		{
-			answer = i;
-			break;
+			// 비교 해서 처리된 값은 뺀다
+			sortCheck.erase(sortCheck.begin());
+			answer++;
+
+			// 위치가 같으면 원하는 값이므로 탈출
+			if (location == idx)
+				break;
+		}
+		// 비교한 값이 다르면 빼낸 값을 맨위로 다시 넣는다
+		else
+		{
+			check.push_back(pair<int, int>(idx, value));
 		}
 	}
 
